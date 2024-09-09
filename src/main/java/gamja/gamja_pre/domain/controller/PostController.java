@@ -30,70 +30,75 @@ public class PostController {
         // todo : 에러 상황에 따라 상황에 따른 errorMessage 와 error code 응답 (마지막에 찾아보고 고치기) + 공통화
 
         HashMap<String, Object> result = new HashMap<>();
-        try {
-            if (viewType.equals("slice")) {
-                // slice 페이지네이션
-                result.put("result", "success");
-                result.put("data", postService.getAllPostsBySlice(pageNumber, pageSize));
-            } else {
-                // 무한 스크롤 페이지네이션
-                result.put("result", "success");
-                result.put("data", postService.getAllPosts(pageNumber, pageSize));
-            }
-        } catch (Exception e) {
-            result.put("result", "fail");
-            result.put("message", e.getMessage());
+        if (viewType.equals("slice")) {
+            // slice 페이지네이션
+            result.put("result", "success");
+            result.put("data", postService.getAllPostsBySlice(pageNumber, pageSize));
+        } else {
+            // 무한 스크롤 페이지네이션
+            result.put("result", "success");
+            result.put("data", postService.getAllPosts(pageNumber, pageSize));
         }
+//        try {
+//
+//        } catch (Exception e) {
+//            result.put("result", "fail");
+//            result.put("message", e.getMessage());
+//        }
         return result;
     }
 
     @PostMapping("/posts")    // post 생성
-    public HashMap<String, String> createPost(@RequestBody PostRequest post) {
+    public HashMap<String, String> createPost(@RequestBody PostRequest post) throws Exception {
         // 입력 - PostRequest post: RequestBody 로 받기
         // 동작 - post 생성: service 에서 처리 / service 가 throw 하는 예외 처리
         // 출력 - 생성 성공 시: result success, data '생성한 post' / 생성 실패 시 : result fail, 오류 출력
+
         HashMap<String, String> result = new HashMap<>();
-        try {
-            result.put("result", "success");
-            result.put("data", postService.createPost(post).toString());
-        } catch (Exception e) {
-            result.put("result", "fail");
-            result.put("message", e.getMessage());
-        }
+        result.put("result", "success");
+        result.put("data", postService.createPost(post).toString());
+//        try {
+//
+//        } catch (Exception e) {
+//            result.put("result", "fail");
+//            result.put("message", e.getMessage());
+//        }
         return result;
     }
 
     @PutMapping("/posts/{id}")    // post 수정
-    public HashMap<String, String> updatePost(@PathVariable(required = true) Long id, @RequestBody PostRequest post) {
+    public HashMap<String, String> updatePost(@PathVariable(required = true) Long id, @RequestBody PostRequest post) throws Exception {
         // 입력 - 수정될 post: RequestBody 로 받기. / id : path 로 받기
         // 동작 - post 수정: service 에서 처리 / service 가 throw 하는 예외 처리
         // 출력 - 수정 성공 시 : result success, data '수정된 post' / 수정 실패 시 : result fail, 오류 출력
 
         HashMap<String, String> result = new HashMap<>();
-        try {
-            result.put("result", "success");
-            result.put("data", postService.updatePost(id, post).toString());
-        } catch (Exception e) {
-            result.put("result", "fail");
-            result.put("message", e.getMessage());
-        }
+        result.put("result", "success");
+        result.put("data", postService.updatePost(id, post).toString());
+//        try {
+//
+//        } catch (Exception e) {
+//            result.put("result", "fail");
+//            result.put("message", e.getMessage());
+//        }
         return result;
     }
 
     @DeleteMapping("/posts/{id}") // post 삭제
-    public HashMap<String, String> deletePost(@PathVariable(required = true) Long id) {
+    public HashMap<String, String> deletePost(@PathVariable(required = true) Long id) throws Exception {
         // 입력 - id: path 로 받기
         // 동작 - post 삭제: service 에서 처리 / service 가 throw 하는 예외 처리
         // 출력 - 삭제 성공 시: result success, data '삭제한 post' / 삭제 실패 시 : result fail, 오류 출력
 
         HashMap<String, String> result = new HashMap<>();
-        try {
-            result.put("result", "success");
-            result.put("data", postService.deletePost(id).toString());
-        } catch (Exception e) {
-            result.put("result", "fail");
-            result.put("message", e.getMessage());
-        }
+        result.put("result", "success");
+        result.put("data", postService.deletePost(id).toString());
+//        try {
+//
+//        } catch (Exception e) {
+//            result.put("result", "fail");
+//            result.put("message", e.getMessage());
+//        }
 
         return result;
     }

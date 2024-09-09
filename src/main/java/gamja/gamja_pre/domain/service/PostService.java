@@ -4,6 +4,8 @@ import gamja.gamja_pre.domain.entity.PostEntity;
 import gamja.gamja_pre.domain.repository.PostRepository;
 import gamja.gamja_pre.dto.request.PostRequest;
 import gamja.gamja_pre.dto.response.PostResponse;
+import gamja.gamja_pre.error.ErrorCode;
+import gamja.gamja_pre.error.NotFoundException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -84,7 +86,7 @@ public class PostService {
     }
 
     public PostResponse updatePost(Long id, PostRequest post) throws Exception {
-        PostEntity target = postRepository.findById(id).orElseThrow(() -> new Exception("User not found with id: " + id));
+        PostEntity target = postRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id, ErrorCode.NOT_FOUND));
 
         target.setTitle(post.getTitle());
         target.setContent(post.getContent());
@@ -95,7 +97,7 @@ public class PostService {
     }
 
     public PostResponse deletePost(Long id) throws Exception {
-        PostEntity target = postRepository.findById(id).orElseThrow(() -> new Exception("User not found with id: " + id));
+        PostEntity target = postRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id, ErrorCode.NOT_FOUND));
         postRepository.deleteById(id);
 
         return new PostResponse(target.getId(), target.getTitle(), target.getContent(), target.getCreatedAt());
