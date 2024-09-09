@@ -27,7 +27,7 @@ public class PostController {
         // 동작 - 보기 방식에 따라 service 호출 / service 가 throw 하는 예외 처리
         // 출력 - 조회 성공 시: List<PostResponse> / 조회 실패 시 : result fail, 오류 출력
 
-        // todo : 에러 상황에 따라 상황에 따른 errorMessage 와 error code 응답 (마지막에 찾아보고 고치기) + 공통화
+        // todo(done) : 에러 상황에 따라 상황에 따른 errorMessage 와 error code 응답 (마지막에 찾아보고 고치기) + 공통화
 
         HashMap<String, Object> result = new HashMap<>();
         if (viewType.equals("slice")) {
@@ -43,7 +43,7 @@ public class PostController {
     }
 
     @PostMapping("/posts")    // post 생성
-    public HashMap<String, String> createPost(@RequestBody PostRequest post) throws Exception {
+    public HashMap<String, String> createPost(@RequestBody PostRequest post) {
         // 입력 - PostRequest post: RequestBody 로 받기
         // 동작 - post 생성: service 에서 처리 / service 가 throw 하는 예외 처리
         // 출력 - 생성 성공 시: result success, data '생성한 post' / 생성 실패 시 : result fail, 오류 출력
@@ -55,7 +55,7 @@ public class PostController {
     }
 
     @PutMapping("/posts/{id}")    // post 수정
-    public HashMap<String, String> updatePost(@PathVariable(required = true) Long id, @RequestBody PostRequest post) throws Exception {
+    public HashMap<String, String> updatePost(@PathVariable(required = true) Long id, @RequestBody PostRequest post) {
         // 입력 - 수정될 post: RequestBody 로 받기. / id : path 로 받기
         // 동작 - post 수정: service 에서 처리 / service 가 throw 하는 예외 처리
         // 출력 - 수정 성공 시 : result success, data '수정된 post' / 수정 실패 시 : result fail, 오류 출력
@@ -67,7 +67,7 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{id}") // post 삭제
-    public HashMap<String, String> deletePost(@PathVariable(required = true) Long id) throws Exception {
+    public HashMap<String, String> deletePost(@PathVariable(required = true) Long id) {
         // 입력 - id: path 로 받기
         // 동작 - post 삭제: service 에서 처리 / service 가 throw 하는 예외 처리
         // 출력 - 삭제 성공 시: result success, data '삭제한 post' / 삭제 실패 시 : result fail, 오류 출력

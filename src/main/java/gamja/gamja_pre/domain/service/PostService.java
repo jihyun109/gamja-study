@@ -59,7 +59,7 @@ public class PostService {
         return postResponse;
     }
 
-    public PostResponse createPost(PostRequest post) throws Exception{
+    public PostResponse createPost(PostRequest post) {
         // postRepository.save(post); 를 사용하지 않고 엔티티 객체를 생성한 후 저장하는 이유
         // 새롭게 엔티티 객체를 생성한 후 저장.
         // 이유 1: DTO(PostReqeust)와 엔티티(PostEntity) 분리.
@@ -85,7 +85,7 @@ public class PostService {
         return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getCreatedAt());
     }
 
-    public PostResponse updatePost(Long id, PostRequest post) throws Exception {
+    public PostResponse updatePost(Long id, PostRequest post)  {
         PostEntity target = postRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id, ErrorCode.NOT_FOUND));
 
         target.setTitle(post.getTitle());
@@ -96,7 +96,7 @@ public class PostService {
         return new PostResponse(target.getId(), target.getTitle(), target.getContent(), target.getCreatedAt());
     }
 
-    public PostResponse deletePost(Long id) throws Exception {
+    public PostResponse deletePost(Long id) throws NotFoundException {
         PostEntity target = postRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id, ErrorCode.NOT_FOUND));
         postRepository.deleteById(id);
 

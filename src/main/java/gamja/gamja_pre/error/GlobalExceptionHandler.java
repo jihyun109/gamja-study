@@ -13,14 +13,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)  // 발생한 NotFoundException에 대해서 처리하는 메서드 작성
     public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex){
-        log.error("handleNotFoundException",ex);
+        log.warn("handleNotFoundException",ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex){
-        log.error("handleException",ex);
+        log.warn("handleException",ex);
         ErrorResponse response = new ErrorResponse(ErrorCode.INTER_SERVER_ERROR);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
