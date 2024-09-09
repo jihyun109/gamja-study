@@ -30,23 +30,19 @@ public class PostController {
         // todo : 에러 상황에 따라 상황에 따른 errorMessage 와 error code 응답 (마지막에 찾아보고 고치기) + 공통화
 
         HashMap<String, Object> result = new HashMap<>();
-
-        if (viewType.equals("slice")) { // slice 페이지네이션
-            try {
+        try {
+            if (viewType.equals("slice")) {
+                // slice 페이지네이션
                 result.put("result", "success");
                 result.put("data", postService.getAllPostsBySlice(pageNumber, pageSize));
-            } catch (Exception e) {
-                result.put("result", "fail");
-                result.put("Exception ERROR: ", e.getMessage());
-            }
-        } else {    // 무한 스크롤 페이지네이션
-            try {
+            } else {
+                // 무한 스크롤 페이지네이션
                 result.put("result", "success");
                 result.put("data", postService.getAllPosts(pageNumber, pageSize));
-            } catch (Exception e) {
-                result.put("result", "fail");
-                result.put("Exception ERROR: ", e.getMessage());
             }
+        } catch (Exception e) {
+            result.put("result", "fail");
+            result.put("message", e.getMessage());
         }
         return result;
     }
@@ -56,16 +52,14 @@ public class PostController {
         // 입력 - PostRequest post: RequestBody 로 받기
         // 동작 - post 생성: service 에서 처리 / service 가 throw 하는 예외 처리
         // 출력 - 생성 성공 시: result success, data '생성한 post' / 생성 실패 시 : result fail, 오류 출력
-
         HashMap<String, String> result = new HashMap<>();
         try {
             result.put("result", "success");
             result.put("data", postService.createPost(post).toString());
         } catch (Exception e) {
             result.put("result", "fail");
-            result.put("Exception ERROR: ", e.getMessage());
+            result.put("message", e.getMessage());
         }
-
         return result;
     }
 
@@ -81,7 +75,7 @@ public class PostController {
             result.put("data", postService.updatePost(id, post).toString());
         } catch (Exception e) {
             result.put("result", "fail");
-            result.put("Exception ERROR: ", e.getMessage());
+            result.put("message", e.getMessage());
         }
         return result;
     }
@@ -98,7 +92,7 @@ public class PostController {
             result.put("data", postService.deletePost(id).toString());
         } catch (Exception e) {
             result.put("result", "fail");
-            result.put("Exception ERROR: ", e.getMessage());
+            result.put("message", e.getMessage());
         }
 
         return result;
