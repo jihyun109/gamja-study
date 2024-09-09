@@ -39,12 +39,6 @@ public class PostController {
             result.put("result", "success");
             result.put("data", postService.getAllPosts(pageNumber, pageSize));
         }
-//        try {
-//
-//        } catch (Exception e) {
-//            result.put("result", "fail");
-//            result.put("message", e.getMessage());
-//        }
         return result;
     }
 
@@ -57,12 +51,6 @@ public class PostController {
         HashMap<String, String> result = new HashMap<>();
         result.put("result", "success");
         result.put("data", postService.createPost(post).toString());
-//        try {
-//
-//        } catch (Exception e) {
-//            result.put("result", "fail");
-//            result.put("message", e.getMessage());
-//        }
         return result;
     }
 
@@ -75,12 +63,6 @@ public class PostController {
         HashMap<String, String> result = new HashMap<>();
         result.put("result", "success");
         result.put("data", postService.updatePost(id, post).toString());
-//        try {
-//
-//        } catch (Exception e) {
-//            result.put("result", "fail");
-//            result.put("message", e.getMessage());
-//        }
         return result;
     }
 
@@ -93,13 +75,6 @@ public class PostController {
         HashMap<String, String> result = new HashMap<>();
         result.put("result", "success");
         result.put("data", postService.deletePost(id).toString());
-//        try {
-//
-//        } catch (Exception e) {
-//            result.put("result", "fail");
-//            result.put("message", e.getMessage());
-//        }
-
         return result;
     }
 }
