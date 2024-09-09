@@ -42,7 +42,7 @@ public class PostController {
         } else {    // 무한 스크롤 페이지네이션
             try {
                 result.put("result", "success");
-                result.put("data", postService.getAllPosts());
+                result.put("data", postService.getAllPosts(pageNumber, pageSize));
             } catch (Exception e) {
                 result.put("result", "fail");
                 result.put("Exception ERROR: ", e.getMessage());

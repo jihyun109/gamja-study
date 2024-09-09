@@ -4,9 +4,11 @@ import gamja.gamja_pre.domain.entity.PostEntity;
 import gamja.gamja_pre.domain.repository.PostRepository;
 import gamja.gamja_pre.dto.request.PostRequest;
 import gamja.gamja_pre.dto.response.PostResponse;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 //@Transactional
@@ -17,15 +19,42 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Slice<PostRequest> getAllPostsBySlice(int pageNumber, int pageSize) {
-//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-//        return postRepository.findSliceByOrderByCreatedAtAsc(pageable);
-        return null;
+    // Page : 전체 페이지 정보와 메타 데이터 제공. 총 페이지 수, 전체 데이터 수 등의 정보
+    // Slice : 현재 페이지에 대한 데이터만 제공. 전체 페이지 수에 대한 정보는 포함되지 않음
+
+    public Page<PostResponse> getAllPosts(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<PostEntity> postEntityPage = postRepository.findAllByOrderByCreatedAtAsc(pageable);
+
+        // Entity -> DTO 변환
+        List<PostResponse> postRequests = postEntityPage.getContent().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(postRequests, pageable, postEntityPage.getTotalElements());
     }
 
-    public Page<PostRequest> getAllPosts() {
+    public Slice<PostResponse> getAllPostsBySlice(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Slice<PostEntity> postEntitySlice = postRepository.findSliceByOrderByCreatedAtAsc(pageable);
 
-        return null;
+        // Entity -> DTO 변환
+        List<PostResponse> postRequests = postEntitySlice.getContent().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+
+        return new SliceImpl<>(postRequests, pageable, postEntitySlice.hasNext());
+    }
+
+    // Entity -> Response 변환 메소드
+    private PostResponse convertToDto(PostEntity postEntity) {
+        PostResponse postResponse = new PostResponse();
+        postResponse.setId(postEntity.getId());
+        postResponse.setTitle(postEntity.getTitle());
+        postResponse.setContent(postEntity.getContent());
+        postResponse.setCreatedAt(postEntity.getCreatedAt());
+        // 다른 필드도 설정
+        return postResponse;
     }
 
     public PostResponse createPost(PostRequest post) throws Exception{
@@ -51,7 +80,7 @@ public class PostService {
         PostEntity savedPost = postRepository.save(postEntity);
 
         // 생성된 게시물 정보를 PostResponse DTO로 변환하여 반환
-        return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent());
+        return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getCreatedAt());
     }
 
     public PostResponse updatePost(Long id, PostRequest post) throws Exception {
@@ -62,13 +91,13 @@ public class PostService {
 
         postRepository.save(target);
 
-        return new PostResponse(target.getId(), target.getTitle(), target.getContent());
+        return new PostResponse(target.getId(), target.getTitle(), target.getContent(), target.getCreatedAt());
     }
 
     public PostResponse deletePost(Long id) throws Exception {
         PostEntity target = postRepository.findById(id).orElseThrow(() -> new Exception("User not found with id: " + id));
         postRepository.deleteById(id);
 
-        return new PostResponse(target.getId(), target.getTitle(), target.getContent());
+        return new PostResponse(target.getId(), target.getTitle(), target.getContent(), target.getCreatedAt());
     }
 }
