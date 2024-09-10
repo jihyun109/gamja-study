@@ -31,11 +31,11 @@ public class PostController {
 
         HashMap<String, Object> result = new HashMap<>();
         if (viewType.equals("slice")) {
-            // slice 페이지네이션
+            // 무한 스크롤 페이지네이션
             result.put("result", "success");
             result.put("data", postService.getAllPostsBySlice(pageNumber, pageSize));
         } else {
-            // 무한 스크롤 페이지네이션
+            // 한 페이지당 6개의 게시물
             result.put("result", "success");
             result.put("data", postService.getAllPosts(pageNumber, pageSize));
         }
