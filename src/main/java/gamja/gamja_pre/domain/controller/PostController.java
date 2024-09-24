@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 // api
 // 입력
-// 동작 - 단순 repo method 만 호출하면 끝?
+// 동작
 // 출력
 // dto 를 사용 , == entity 를 외부로 노출하지마라,
 @RestController // JSON, XML 과 같은 형식으로 데이터 반환

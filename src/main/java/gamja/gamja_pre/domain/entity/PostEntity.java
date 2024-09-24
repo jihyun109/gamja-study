@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "posts")
-// Lombok 애너테이션
+// Lombok 어노테이션
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
