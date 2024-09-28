@@ -1,6 +1,6 @@
 package gamja.gamja_pre.config;
 
-import gamja.gamja_pre.domain.service.PostService;
+import gamja.gamja_pre.domain.service.PostServiceImpl;
 import gamja.gamja_pre.domain.repository.PostRepository;
 import org.springframework.context.annotation.Bean;
 
@@ -13,7 +13,7 @@ public class Config {
     }
 
     @Bean
-    public PostService postService() {
-        return new PostService(postRepository);
+    public PostServiceImpl postService() {
+        return new PostServiceImpl(postRepository);
     }
 }
