@@ -24,4 +24,9 @@ public class PostEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;    // 생성 시각 자동 기록. 생성된 날짜와 시간이 자동적으로 저장됨.
 
+    public void updatePost(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
 }
