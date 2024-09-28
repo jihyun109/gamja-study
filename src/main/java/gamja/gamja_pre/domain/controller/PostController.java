@@ -1,6 +1,7 @@
 package gamja.gamja_pre.domain.controller;
 
-import gamja.gamja_pre.domain.service.PostService;
+import gamja.gamja_pre.domain.service.PostServiceImpl;
+import gamja.gamja_pre.dto.post.response.PostResponseDTO;
 import gamja.gamja_pre.dto.request.PostRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +14,10 @@ import java.util.HashMap;
 // dto 를 사용 , == entity 를 외부로 노출하지마라,
 @RestController // JSON, XML 과 같은 형식으로 데이터 반환
 public class PostController {
-    private PostService postService;
+    private PostServiceImpl postServiceImpl;
 
-    public PostController(PostService postService) {
-        this.postService = postService;
+    public PostController(PostServiceImpl postServiceImpl) {
+        this.postServiceImpl = postServiceImpl;
     }
 
     @GetMapping("/posts") // 모든 post 리스트 조회
@@ -33,13 +34,18 @@ public class PostController {
         if (viewType.equals("slice")) {
             // 무한 스크롤 페이지네이션
             result.put("result", "success");
-            result.put("data", postService.getAllPostsBySlice(pageNumber, pageSize));
+            result.put("data", postServiceImpl.getAllPostsBySlice(pageNumber, pageSize));
         } else {
             // 한 페이지당 6개의 게시물
             result.put("result", "success");
-            result.put("data", postService.getAllPosts(pageNumber, pageSize));
+            result.put("data", postServiceImpl.getAllPosts(pageNumber, pageSize));
         }
         return result;
+    }
+
+    @GetMapping("/posts/{id}")
+    public PostResponseDTO getPostById(@PathVariable("id") Long id) {
+        return postServiceImpl.getPostById(id);
     }
 
     @PostMapping("/posts")    // post 생성
@@ -50,7 +56,7 @@ public class PostController {
 
         HashMap<String, String> result = new HashMap<>();
         result.put("result", "success");
-        result.put("data", postService.createPost(post).toString());
+        result.put("data", postServiceImpl.createPost(post).toString());
         return result;
     }
 
@@ -62,7 +68,7 @@ public class PostController {
 
         HashMap<String, String> result = new HashMap<>();
         result.put("result", "success");
-        result.put("data", postService.updatePost(id, post).toString());
+        result.put("data", postServiceImpl.updatePost(id, post).toString());
         return result;
     }
 
@@ -74,7 +80,7 @@ public class PostController {
 
         HashMap<String, String> result = new HashMap<>();
         result.put("result", "success");
-        result.put("data", postService.deletePost(id).toString());
+        result.put("data", postServiceImpl.deletePost(id).toString());
         return result;
     }
 }
