@@ -2,11 +2,8 @@ package gamja.gamja_pre.domain.service;
 
 import gamja.gamja_pre.domain.entity.PostEntity;
 import gamja.gamja_pre.domain.repository.PostRepository;
-import gamja.gamja_pre.dto.post.request.PostCreateRequestDTO;
-import gamja.gamja_pre.dto.post.request.PostUpdateRequestDTO;
-import gamja.gamja_pre.dto.post.response.PostPagedListResponseDTO;
-import gamja.gamja_pre.dto.post.response.PostResponseDTO;
-import gamja.gamja_pre.dto.post.response.PostScrollListResponseDTO;
+import gamja.gamja_pre.dto.post.request.*;
+import gamja.gamja_pre.dto.post.response.*;
 import gamja.gamja_pre.error.ErrorCode;
 import gamja.gamja_pre.error.NotFoundException;
 import gamja.gamja_pre.validator.PostValidation;
