@@ -4,6 +4,7 @@ import gamja.gamja_pre.domain.service.PostServiceImpl;
 import gamja.gamja_pre.dto.post.request.PostCreateRequestDTO;
 import gamja.gamja_pre.dto.post.request.PostUpdateRequestDTO;
 import gamja.gamja_pre.dto.post.response.PostResponseDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +44,8 @@ public class PostController {
         return result;
     }
 
-    @GetMapping("/posts/{id}")
-    public PostResponseDTO getPostById( @PathVariable("id") Long id) {
+    @GetMapping("/post/{id}")
+    public PostResponseDTO getPostById(@PathVariable("id") Long id) {
         return postServiceImpl.getPostById(id);
     }
 
@@ -61,13 +62,13 @@ public class PostController {
 //    }
 
     @PostMapping("/posts")    // post 생성
-    public ResponseEntity<String> createPost(@RequestBody PostCreateRequestDTO postCreateRequest) {
+    public ResponseEntity<String> createPost(@Valid @RequestBody PostCreateRequestDTO postCreateRequest) {
         postServiceImpl.createPost(postCreateRequest);
         return ResponseEntity.ok("게시물 생성 완료");
     }
 
     @PutMapping("/posts/{id}")    // post 수정
-    public ResponseEntity<String> updatePost(@PathVariable(required = true) Long id, @RequestBody PostUpdateRequestDTO postUpdateRequest) {
+    public ResponseEntity<String> updatePost(@PathVariable(required = true) Long id, @Valid @RequestBody PostUpdateRequestDTO postUpdateRequest) {
         postServiceImpl.updatePost(id, postUpdateRequest);
         return ResponseEntity.ok("게시물 수정 완료");
     }

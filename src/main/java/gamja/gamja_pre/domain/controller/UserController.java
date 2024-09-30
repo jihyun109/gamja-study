@@ -1,19 +1,17 @@
 package gamja.gamja_pre.domain.controller;
 
 import gamja.gamja_pre.domain.service.UserServiceImpl;
-import gamja.gamja_pre.dto.post.request.PostUpdateRequestDTO;
 import gamja.gamja_pre.dto.user.request.UserCreateRequestDTO;
 import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
 import gamja.gamja_pre.dto.user.response.UserPagedListResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserScrollListResponseDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,20 +35,20 @@ public class UserController {
         Slice<UserScrollListResponseDTO> scrollUsers = userServiceImpl.getInfiniteScrollUsers(pageNumber, pageSize);
         return ResponseEntity.ok(scrollUsers);
     }
-    
+
     @GetMapping("/user/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userServiceImpl.getUserById(id));
     }
-    
+
     @PostMapping("/users")
-    public ResponseEntity<String> createUser(@RequestBody UserCreateRequestDTO userCreateRequestDTO) {
+    public ResponseEntity<String> createUser(@Valid @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
         userServiceImpl.createUser(userCreateRequestDTO);
         return ResponseEntity.ok("유저 생성 완료");
     }
 
     @PutMapping("/users/{id}")    // user 수정
-    public ResponseEntity<String> updateUser(@PathVariable(required = true) Long id, @RequestBody UserUpdateRequestDTO userUpdateRequest) {
+    public ResponseEntity<String> updateUser(@PathVariable(required = true) Long id, @Valid @RequestBody UserUpdateRequestDTO userUpdateRequest) {
         userServiceImpl.updateUser(id, userUpdateRequest);
         return ResponseEntity.ok("유저 수정 완료");
     }
