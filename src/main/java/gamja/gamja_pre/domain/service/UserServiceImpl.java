@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;    // 멤버 변수로 선언하고, 생성자를 통해 주입받음.
 
     @Override
+    @Transactional(readOnly = true)
     public Page<UserPagedListResponseDTO> getPagedUsers(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<UserEntity> userEntityPage = userRepository.findAllByOrderByIdAsc(pageable);
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public Slice<UserScrollListResponseDTO> getInfiniteScrollUsers(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Slice<UserEntity> userEntitySlice = userRepository.findSliceByOrderByIdAsc(pageable);
@@ -76,6 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponseDTO getUserById(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id, ErrorCode.NOT_FOUND));
         return new UserResponseDTO(user.getId(), user.getUserName(), user.getEmail());

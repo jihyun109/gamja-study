@@ -25,6 +25,7 @@ public class PostServiceImpl implements PostService {
     // Slice : 현재 페이지에 대한 데이터만 제공. 전체 페이지 수에 대한 정보는 포함되지 않음
 
     @Override
+    @Transactional(readOnly = true)
     public Page<PostPagedListResponseDTO> getPagedPosts(int pageNumber, int pageSize) {   // 페이징 처리
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<PostEntity> postEntityPage = postRepository.findAllByOrderByCreatedAtAsc(pageable);
@@ -52,6 +53,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Slice<PostScrollListResponseDTO> getInfiniteScrollPosts(int pageNumber, int pageSize) {   // 무한 스크롤
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Slice<PostEntity> postEntitySlice = postRepository.findSliceByOrderByCreatedAtAsc(pageable);
@@ -79,6 +81,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PostResponseDTO getPostById(Long id) {
         PostEntity post = postRepository.findById(id).orElseThrow(() -> new NotFoundException("Post not found with id: " + id, ErrorCode.NOT_FOUND));
 
@@ -86,6 +89,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PostSearchResponseDTO> getSearchByKeyword(String keyword) {
         List<PostEntity> posts = postRepository.findByTitleContains(keyword);
         List<PostSearchResponseDTO> postRequests = mapToResponseDTO(posts, this::convertToPostSearchResponseDTO);
