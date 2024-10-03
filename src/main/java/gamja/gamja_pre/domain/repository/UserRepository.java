@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    Page<UserEntity> findPagedAllUsers(Pageable pageable);
-    Slice<UserEntity> findSliceAllUsers(Pageable pageable);
+    Page<UserEntity> findAllByOrderByIdAsc(Pageable pageable);
+    Slice<UserEntity> findSliceByOrderByIdAsc(Pageable pageable);
 }

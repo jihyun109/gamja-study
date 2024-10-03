@@ -10,7 +10,6 @@ import org.springframework.data.domain.Slice;
 
 public interface PostService {
     Page<PostPagedListResponseDTO> getPagedPosts(int pageNumber, int pageSize);
-
     Slice<PostScrollListResponseDTO> getInfiniteScrollPosts(int pageNumber, int pageSize);
 
     PostResponseDTO getPostById(Long id);

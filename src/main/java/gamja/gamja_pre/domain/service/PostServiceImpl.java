@@ -6,7 +6,6 @@ import gamja.gamja_pre.dto.post.request.*;
 import gamja.gamja_pre.dto.post.response.*;
 import gamja.gamja_pre.error.ErrorCode;
 import gamja.gamja_pre.error.NotFoundException;
-import gamja.gamja_pre.validator.PostValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 //@Transactional
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
-    private final PostValidation postValidation;
 
     // Page : 전체 페이지 정보와 메타 데이터 제공. 총 페이지 수, 전체 데이터 수 등의 정보
     // Slice : 현재 페이지에 대한 데이터만 제공. 전체 페이지 수에 대한 정보는 포함되지 않음
@@ -80,7 +78,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDTO getPostById(Long id) {
-        postValidation.validateId(id);
         PostEntity post = postRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id, ErrorCode.NOT_FOUND));
 
         return new PostResponseDTO(post.getId(), post.getTitle(), post.getContent(), post.getCreatedAt());
