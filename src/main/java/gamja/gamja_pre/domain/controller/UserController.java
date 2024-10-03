@@ -6,6 +6,7 @@ import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
 import gamja.gamja_pre.dto.user.response.UserPagedListResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserScrollListResponseDTO;
+import gamja.gamja_pre.dto.user.response.UserSearchByEmailResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,9 +37,14 @@ public class UserController {
         return ResponseEntity.ok(scrollUsers);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user/id/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userServiceImpl.getUserById(id));
+    }
+
+    @GetMapping("/users/email/{email}")
+    public ResponseEntity<UserSearchByEmailResponseDTO> getUserById(@PathVariable("email") String email) {
+        return ResponseEntity.ok(userServiceImpl.getUserByEmail(email));
     }
 
     @PostMapping("/users")

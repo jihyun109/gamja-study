@@ -7,6 +7,7 @@ import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
 import gamja.gamja_pre.dto.user.response.UserPagedListResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserScrollListResponseDTO;
+import gamja.gamja_pre.dto.user.response.UserSearchByEmailResponseDTO;
 import gamja.gamja_pre.error.ErrorCode;
 import gamja.gamja_pre.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -82,6 +83,14 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO getUserById(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id, ErrorCode.NOT_FOUND));
         return new UserResponseDTO(user.getId(), user.getUserName(), user.getEmail());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserSearchByEmailResponseDTO getUserByEmail(String email) {
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User not found with email: " + email, ErrorCode.NOT_FOUND));
+        return new UserSearchByEmailResponseDTO(user.getId(), user.getUserName(), user.getEmail());
     }
 
     @Override
