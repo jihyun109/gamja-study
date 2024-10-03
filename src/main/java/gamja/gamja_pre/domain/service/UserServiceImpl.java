@@ -1,7 +1,6 @@
 package gamja.gamja_pre.domain.service;
 
 import gamja.gamja_pre.domain.entity.UserEntity;
-import gamja.gamja_pre.domain.entity.UserEntity;
 import gamja.gamja_pre.domain.repository.UserRepository;
 import gamja.gamja_pre.dto.user.request.UserCreateRequestDTO;
 import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
@@ -17,16 +16,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-//    private final PostValidation postValidation;
+    private final UserRepository userRepository;    // 멤버 변수로 선언하고, 생성자를 통해 주입받음.
 
     @Override
     public Page<UserPagedListResponseDTO> getPagedUsers(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<UserEntity> userEntityPage = userRepository.findPagedAllUsers(pageable);
+        Page<UserEntity> userEntityPage = userRepository.findAllByOrderByIdAsc(pageable);
 
         List<UserPagedListResponseDTO> userRequests = mapToUserPagedListResponseDTO(userEntityPage.getContent());
 
@@ -52,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Slice<UserScrollListResponseDTO> getInfiniteScrollUsers(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Slice<UserEntity> userEntitySlice = userRepository.findSliceAllUsers(pageable);
+        Slice<UserEntity> userEntitySlice = userRepository.findSliceByOrderByIdAsc(pageable);
 
         List<UserScrollListResponseDTO> userRequests = mapToUserScrollListResponse(userEntitySlice.getContent());
 
