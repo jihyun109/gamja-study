@@ -3,14 +3,17 @@ package gamja.gamja_pre.domain.controller;
 import gamja.gamja_pre.domain.service.PostServiceImpl;
 import gamja.gamja_pre.dto.post.request.PostCreateRequestDTO;
 import gamja.gamja_pre.dto.post.request.PostUpdateRequestDTO;
+import gamja.gamja_pre.dto.post.response.PostPagedListResponseDTO;
 import gamja.gamja_pre.dto.post.response.PostResponseDTO;
+import gamja.gamja_pre.dto.post.response.PostScrollListResponseDTO;
 import gamja.gamja_pre.dto.post.response.PostSearchResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 // api
@@ -23,32 +26,27 @@ import java.util.List;
 public class PostController {
     private final PostServiceImpl postServiceImpl;
 
-    @GetMapping("/posts") // 모든 post 리스트 조회
-    public HashMap<String, Object> getAllPosts(@RequestParam(defaultValue = "slice") String viewType,  // 보기 방식
-                                               @RequestParam(defaultValue = "0") int pageNumber, // 페이지 번호
-                                               @RequestParam(defaultValue = "6") int pageSize) {   // 페이지당 제공하는 게시물 수
-        // 입력 - 보기방식, 페이지 번호, 페이지 당 제공하는 게시물 수 : requestParam 으로 받기
-        // 동작 - 보기 방식에 따라 service 호출 / service 가 throw 하는 예외 처리
-        // 출력 - 조회 성공 시: List<PostResponse> / 조회 실패 시 : result fail, 오류 출력
+    @GetMapping("/posts/paged") // 페이징 처리됨.
+    public ResponseEntity<Page<PostPagedListResponseDTO>> getPagenatedPosts(
+            @RequestParam(defaultValue = "0") int pageNumber, // 페이지 번호
+            @RequestParam(defaultValue = "6") int pageSize) {
 
-        // todo(done) : 에러 상황에 따라 상황에 따른 errorMessage 와 error code 응답 (마지막에 찾아보고 고치기) + 공통화
+        Page<PostPagedListResponseDTO> pagedUsers = postServiceImpl.getPagedPosts(pageNumber, pageSize);
+        return ResponseEntity.ok(pagedUsers);
+    }
 
-        HashMap<String, Object> result = new HashMap<>();
-        if (viewType.equals("slice")) {
-            // 무한 스크롤 페이지네이션
-            result.put("result", "success");
-            result.put("data", postServiceImpl.getInfiniteScrollPosts(pageNumber, pageSize));
-        } else {
-            // 한 페이지당 6개의 게시물
-            result.put("result", "success");
-            result.put("data", postServiceImpl.getPagedPosts(pageNumber, pageSize));
-        }
-        return result;
+    @GetMapping("/posts/scroll") // 무한 스크롤
+    public ResponseEntity<Slice<PostScrollListResponseDTO>> getInfiniteScrollPosts(
+            @RequestParam(defaultValue = "0") int pageNumber, // 페이지 번호
+            @RequestParam(defaultValue = "6") int pageSize) {
+
+        Slice<PostScrollListResponseDTO> scrollUsers = postServiceImpl.getInfiniteScrollPosts(pageNumber, pageSize);
+        return ResponseEntity.ok(scrollUsers);
     }
 
     @GetMapping("/post/{id}")
-    public PostResponseDTO getPostById(@PathVariable("id") Long id) {
-        return postServiceImpl.getPostById(id);
+    public ResponseEntity<PostResponseDTO> getPostById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(postServiceImpl.getPostById(id));
     }
 
 //    @PostMapping("/posts")    // post 생성
