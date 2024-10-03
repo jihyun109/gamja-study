@@ -35,13 +35,6 @@ public class PostServiceImpl implements PostService {
         return new PageImpl<>(postRequests, pageable, postEntityPage.getTotalElements());
     }
 
-//    // List<PostEntity>를 List<PostPagedListResponseDTO> 로 변환
-//    private List<PostPagedListResponseDTO> mapToPostPagedListResponseDTO(List<PostEntity> postEntities) {
-//        return postEntities.stream()
-//                .map(this::convertToPostPagedListResponseDTO)
-//                .collect(Collectors.toList());
-//    }
-
     // Entity -> PostPagedListResponseDTO 변환
     private PostPagedListResponseDTO convertToPostPagedListResponseDTO(PostEntity postEntity) {
         return new PostPagedListResponseDTO(
@@ -62,13 +55,6 @@ public class PostServiceImpl implements PostService {
 
         return new SliceImpl<>(postRequests, pageable, postEntitySlice.hasNext());
     }
-
-//    // List<PostEntity>를 List<PostScrollListResponseDTO> 로 변환
-//    private List<PostScrollListResponseDTO> mapToPostScrollListResponse(List<PostEntity> postEntities) {
-//        return postEntities.stream()
-//                .map(this::convertToPostScrollListResponseDTO)
-//                .collect(Collectors.toList());
-//    }
 
     // Entity -> PostScrollListResponseDTO 변환
     private PostScrollListResponseDTO convertToPostScrollListResponseDTO(PostEntity postEntity) {
@@ -97,13 +83,6 @@ public class PostServiceImpl implements PostService {
         return postRequests;
     }
 
-//    // List<PostEntity>를 List<PostSearchResponseDTO>로 변환
-//    private List<PostSearchResponseDTO> mapToPostSearchResponse(List<PostEntity> postEntities) {
-//        return postEntities.stream()
-//                .map(this::convertToPostSearchResponseDTO)
-//                .collect(Collectors.toList());
-//    }
-
     // Entity -> PostSearchResponseDTO 변환 메서드
     private PostSearchResponseDTO convertToPostSearchResponseDTO(PostEntity postEntity) {
         return new PostSearchResponseDTO(
@@ -119,7 +98,6 @@ public class PostServiceImpl implements PostService {
                 .map(mapper)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public void createPost(PostCreateRequestDTO postCreateRequest) {
