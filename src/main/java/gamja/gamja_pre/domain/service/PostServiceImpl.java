@@ -9,13 +9,14 @@ import gamja.gamja_pre.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-//@Transactional
+@Transactional  // 클래스 레벨이 적용해 클래스 내의 모든 메서드가 동일한 트랜잭션 관리하에 동작하도록 함.
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
