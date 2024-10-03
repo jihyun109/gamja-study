@@ -4,12 +4,14 @@ import gamja.gamja_pre.domain.service.PostServiceImpl;
 import gamja.gamja_pre.dto.post.request.PostCreateRequestDTO;
 import gamja.gamja_pre.dto.post.request.PostUpdateRequestDTO;
 import gamja.gamja_pre.dto.post.response.PostResponseDTO;
+import gamja.gamja_pre.dto.post.response.PostSearchResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 // api
 // 입력
@@ -60,6 +62,13 @@ public class PostController {
 //        result.put("data", postServiceImpl.createPost(post).toString());
 //        return result;
 //    }
+
+    @GetMapping("/posts/search")
+    public ResponseEntity<List<PostSearchResponseDTO>> getSearchPosts(
+            @RequestParam("keyword") String keyword) {
+        List<PostSearchResponseDTO> posts = postServiceImpl.getSearchByKeyword(keyword);
+        return ResponseEntity.ok(posts);
+    }
 
     @PostMapping("/posts")    // post 생성
     public ResponseEntity<String> createPost(@Valid @RequestBody PostCreateRequestDTO postCreateRequest) {

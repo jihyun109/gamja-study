@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,17 +29,17 @@ public class PostServiceImpl implements PostService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<PostEntity> postEntityPage = postRepository.findAllByOrderByCreatedAtAsc(pageable);
 
-        List<PostPagedListResponseDTO> postRequests = mapToPostPagedListResponseDTO(postEntityPage.getContent());
+        List<PostPagedListResponseDTO> postRequests = mapToResponseDTO(postEntityPage.getContent(), this::convertToPostPagedListResponseDTO);
 
         return new PageImpl<>(postRequests, pageable, postEntityPage.getTotalElements());
     }
 
-    // List<PostEntity>를 List<PostPagedListResponseDTO> 로 변환
-    private List<PostPagedListResponseDTO> mapToPostPagedListResponseDTO(List<PostEntity> postEntities) {
-        return postEntities.stream()
-                .map(this::convertToPostPagedListResponseDTO)
-                .collect(Collectors.toList());
-    }
+//    // List<PostEntity>를 List<PostPagedListResponseDTO> 로 변환
+//    private List<PostPagedListResponseDTO> mapToPostPagedListResponseDTO(List<PostEntity> postEntities) {
+//        return postEntities.stream()
+//                .map(this::convertToPostPagedListResponseDTO)
+//                .collect(Collectors.toList());
+//    }
 
     // Entity -> PostPagedListResponseDTO 변환
     private PostPagedListResponseDTO convertToPostPagedListResponseDTO(PostEntity postEntity) {
@@ -55,17 +56,17 @@ public class PostServiceImpl implements PostService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Slice<PostEntity> postEntitySlice = postRepository.findSliceByOrderByCreatedAtAsc(pageable);
 
-        List<PostScrollListResponseDTO> postRequests = mapToPostScrollListResponse(postEntitySlice.getContent());
+        List<PostScrollListResponseDTO> postRequests = mapToResponseDTO(postEntitySlice.getContent(), this::convertToPostScrollListResponseDTO);
 
         return new SliceImpl<>(postRequests, pageable, postEntitySlice.hasNext());
     }
 
-    // List<PostEntity>를 List<PostScrollListResponseDTO> 로 변환
-    private List<PostScrollListResponseDTO> mapToPostScrollListResponse(List<PostEntity> postEntities) {
-        return postEntities.stream()
-                .map(this::convertToPostScrollListResponseDTO)
-                .collect(Collectors.toList());
-    }
+//    // List<PostEntity>를 List<PostScrollListResponseDTO> 로 변환
+//    private List<PostScrollListResponseDTO> mapToPostScrollListResponse(List<PostEntity> postEntities) {
+//        return postEntities.stream()
+//                .map(this::convertToPostScrollListResponseDTO)
+//                .collect(Collectors.toList());
+//    }
 
     // Entity -> PostScrollListResponseDTO 변환
     private PostScrollListResponseDTO convertToPostScrollListResponseDTO(PostEntity postEntity) {
@@ -79,10 +80,42 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostResponseDTO getPostById(Long id) {
-        PostEntity post = postRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id, ErrorCode.NOT_FOUND));
+        PostEntity post = postRepository.findById(id).orElseThrow(() -> new NotFoundException("Post not found with id: " + id, ErrorCode.NOT_FOUND));
 
         return new PostResponseDTO(post.getId(), post.getTitle(), post.getContent(), post.getCreatedAt());
     }
+
+    @Override
+    public List<PostSearchResponseDTO> getSearchByKeyword(String keyword) {
+        List<PostEntity> posts = postRepository.findByTitleContains(keyword);
+        List<PostSearchResponseDTO> postRequests = mapToResponseDTO(posts, this::convertToPostSearchResponseDTO);
+
+        return postRequests;
+    }
+
+//    // List<PostEntity>를 List<PostSearchResponseDTO>로 변환
+//    private List<PostSearchResponseDTO> mapToPostSearchResponse(List<PostEntity> postEntities) {
+//        return postEntities.stream()
+//                .map(this::convertToPostSearchResponseDTO)
+//                .collect(Collectors.toList());
+//    }
+
+    // Entity -> PostSearchResponseDTO 변환 메서드
+    private PostSearchResponseDTO convertToPostSearchResponseDTO(PostEntity postEntity) {
+        return new PostSearchResponseDTO(
+                postEntity.getId(),
+                postEntity.getTitle(),
+                postEntity.getContent(),
+                postEntity.getCreatedAt()
+        );
+    }
+
+    private <T> List<T> mapToResponseDTO(List<PostEntity> postEntities, Function<PostEntity, T> mapper) {
+        return postEntities.stream()
+                .map(mapper)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public void createPost(PostCreateRequestDTO postCreateRequest) {
