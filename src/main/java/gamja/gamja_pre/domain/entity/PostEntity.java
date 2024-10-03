@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Getter
-@Setter
-
 public class PostEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 DB에 위임
