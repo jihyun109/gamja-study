@@ -83,12 +83,23 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public List<PostSearchResponseDTO> getSearchByKeyword(String keyword) {
         List<PostEntity> postEntityList = postRepository.findByTitleContains(keyword);
-        List<PostSearchResponseDTO> postRequests = mapToResponseDTO(postEntityList, this::convertToPostSearchResponseDTO);
 
-        return postRequests;
+        return mapToResponseDTO(postEntityList, this::convertToPostSearchResponseDTO);
     }
 
-    // Entity -> PostSearchResponseDTO 변환 메서드
+    @Override
+    @Transactional(readOnly = true)
+    public List<PostsByUserIdResponseDTO> getPostsByUserId(Long userId) {
+        List<PostEntity> posts = postRepository.findByUserEntityId(userId);
+        return mapToResponseDTO(posts, this::convertToPostsByUserIdResponseDTO);
+    }
+
+    private <T> List<T> mapToResponseDTO(List<PostEntity> postEntities, Function<PostEntity, T> mapper) {
+        return postEntities.stream()
+                .map(mapper)
+                .collect(Collectors.toList());
+    }
+
     private PostSearchResponseDTO convertToPostSearchResponseDTO(PostEntity postEntity) {
         return new PostSearchResponseDTO(
                 postEntity.getId(),
@@ -99,10 +110,14 @@ public class PostServiceImpl implements PostService {
         );
     }
 
-    private <T> List<T> mapToResponseDTO(List<PostEntity> postEntities, Function<PostEntity, T> mapper) {
-        return postEntities.stream()
-                .map(mapper)
-                .collect(Collectors.toList());
+    private PostsByUserIdResponseDTO convertToPostsByUserIdResponseDTO(PostEntity postEntity) {
+        return new PostsByUserIdResponseDTO(
+                postEntity.getId(),
+                postEntity.getTitle(),
+                postEntity.getContent(),
+                postEntity.getCreatedAt(),
+                postEntity.getUserEntity().getUserName()
+        );
     }
 
     @Override

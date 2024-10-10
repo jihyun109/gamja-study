@@ -16,4 +16,5 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
     Slice<PostEntity> findSliceByOrderByCreatedAtAsc(Pageable pageable);
     Page<PostEntity> findAllByOrderByCreatedAtAsc(Pageable pageable);
     List<PostEntity> findByTitleContains(String keyword);   // 제목에 keyword가 포함되어있는 게시물 조회
+    List<PostEntity> findByUserEntityId(Long userId);
 }

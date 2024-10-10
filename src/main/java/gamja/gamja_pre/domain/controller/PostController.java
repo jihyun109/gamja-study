@@ -3,10 +3,7 @@ package gamja.gamja_pre.domain.controller;
 import gamja.gamja_pre.domain.service.PostServiceImpl;
 import gamja.gamja_pre.dto.post.request.PostCreateRequestDTO;
 import gamja.gamja_pre.dto.post.request.PostUpdateRequestDTO;
-import gamja.gamja_pre.dto.post.response.PostPagedListResponseDTO;
-import gamja.gamja_pre.dto.post.response.PostByIdResponseDTO;
-import gamja.gamja_pre.dto.post.response.PostScrollListResponseDTO;
-import gamja.gamja_pre.dto.post.response.PostSearchResponseDTO;
+import gamja.gamja_pre.dto.post.response.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -65,6 +62,13 @@ public class PostController {
     public ResponseEntity<List<PostSearchResponseDTO>> getSearchPosts(
             @RequestParam("keyword") String keyword) {
         List<PostSearchResponseDTO> posts = postServiceImpl.getSearchByKeyword(keyword);
+        return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/posts/{userId}")
+    public ResponseEntity<List<PostsByUserIdResponseDTO>> getSearchPosts(
+            @PathVariable("userId") Long userId) {
+        List<PostsByUserIdResponseDTO> posts = postServiceImpl.getPostsByUserId(userId);
         return ResponseEntity.ok(posts);
     }
 
