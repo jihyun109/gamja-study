@@ -1,6 +1,6 @@
 package gamja.gamja_pre.domain.controller;
 
-import gamja.gamja_pre.domain.service.UserServiceImpl;
+import gamja.gamja_pre.domain.service.UserService;
 import gamja.gamja_pre.dto.user.request.UserCreateRequestDTO;
 import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
 import gamja.gamja_pre.dto.user.response.UserPagedListResponseDTO;
@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 public class UserController {
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @GetMapping("/users/paged") // 페이징 처리됨.
     public ResponseEntity<Page<UserPagedListResponseDTO>> getPagenatedUsers(
             @RequestParam(defaultValue = "0") int pageNumber, // 페이지 번호
             @RequestParam(defaultValue = "6") int pageSize) {
 
-        Page<UserPagedListResponseDTO> pagedUsers = userServiceImpl.getPagedUsers(pageNumber, pageSize);
+        Page<UserPagedListResponseDTO> pagedUsers = userService.getPagedUsers(pageNumber, pageSize);
         return ResponseEntity.ok(pagedUsers);
     }
 
@@ -33,36 +33,36 @@ public class UserController {
             @RequestParam(defaultValue = "0") int pageNumber, // 페이지 번호
             @RequestParam(defaultValue = "6") int pageSize) {
 
-        Slice<UserScrollListResponseDTO> scrollUsers = userServiceImpl.getInfiniteScrollUsers(pageNumber, pageSize);
+        Slice<UserScrollListResponseDTO> scrollUsers = userService.getInfiniteScrollUsers(pageNumber, pageSize);
         return ResponseEntity.ok(scrollUsers);
     }
 
     @GetMapping("/user/id/{id}")
     public ResponseEntity<UserByIdResponseDTO> getUserById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userServiceImpl.getUserById(id));
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping("/users/email/{email}")
     public ResponseEntity<UserSearchByEmailResponseDTO> getUserById(@PathVariable("email") String email) {
-        return ResponseEntity.ok(userServiceImpl.getUserByEmail(email));
+        return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
     @PostMapping("/users")
     public ResponseEntity<String> createUser(@Valid @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
-        userServiceImpl.createUser(userCreateRequestDTO);
+        userService.createUser(userCreateRequestDTO);
         return ResponseEntity.ok("유저 생성 완료");
     }
 
     @PutMapping("/users/{id}")    // user 수정
     public ResponseEntity<String> updateUser(@PathVariable(required = true) Long id, @Valid @RequestBody UserUpdateRequestDTO userUpdateRequest) {
-        userServiceImpl.updateUser(id, userUpdateRequest);
+        userService.updateUser(id, userUpdateRequest);
         return ResponseEntity.ok("유저 수정 완료");
     }
 
 
     @DeleteMapping("/users/{id}") // user 삭제
     public ResponseEntity<String> deleteUser(@PathVariable(required = true) Long id) {
-        userServiceImpl.deleteUser(id);
+        userService.deleteUser(id);
         return ResponseEntity.ok("유저 삭제 완료");
     }
 }
