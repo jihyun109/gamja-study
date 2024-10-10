@@ -10,9 +10,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostResponseDTO {
+public class PostByIdResponseDTO {
     private Long id;
     private String title;
     private String content;
     private LocalDateTime createdAt;
+    private String writerName;
+
 }

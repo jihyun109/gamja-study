@@ -4,15 +4,14 @@ import gamja.gamja_pre.domain.entity.UserEntity;
 import gamja.gamja_pre.domain.repository.UserRepository;
 import gamja.gamja_pre.dto.user.request.UserCreateRequestDTO;
 import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
+import gamja.gamja_pre.dto.user.response.UserByIdResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserPagedListResponseDTO;
-import gamja.gamja_pre.dto.user.response.UserResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserScrollListResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserSearchByEmailResponseDTO;
 import gamja.gamja_pre.error.ErrorCode;
 import gamja.gamja_pre.error.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -80,9 +79,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserResponseDTO getUserById(Long id) {
+    public UserByIdResponseDTO getUserById(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id, ErrorCode.NOT_FOUND));
-        return new UserResponseDTO(user.getId(), user.getUserName(), user.getEmail());
+        return new UserByIdResponseDTO(user.getId(), user.getUserName(), user.getEmail());
     }
 
     @Override

@@ -4,7 +4,7 @@ import gamja.gamja_pre.domain.service.UserServiceImpl;
 import gamja.gamja_pre.dto.user.request.UserCreateRequestDTO;
 import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
 import gamja.gamja_pre.dto.user.response.UserPagedListResponseDTO;
-import gamja.gamja_pre.dto.user.response.UserResponseDTO;
+import gamja.gamja_pre.dto.user.response.UserByIdResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserScrollListResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserSearchByEmailResponseDTO;
 import jakarta.validation.Valid;
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/user/id/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable("id") Long id) {
+    public ResponseEntity<UserByIdResponseDTO> getUserById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userServiceImpl.getUserById(id));
     }
 

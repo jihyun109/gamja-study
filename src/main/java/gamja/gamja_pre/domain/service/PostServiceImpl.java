@@ -1,7 +1,9 @@
 package gamja.gamja_pre.domain.service;
 
 import gamja.gamja_pre.domain.entity.PostEntity;
+import gamja.gamja_pre.domain.entity.UserEntity;
 import gamja.gamja_pre.domain.repository.PostRepository;
+import gamja.gamja_pre.domain.repository.UserRepository;
 import gamja.gamja_pre.dto.post.request.*;
 import gamja.gamja_pre.dto.post.response.*;
 import gamja.gamja_pre.error.ErrorCode;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @Transactional  // 클래스 레벨이 적용해 클래스 내의 모든 메서드가 동일한 트랜잭션 관리하에 동작하도록 함.
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     // Page : 전체 페이지 정보와 메타 데이터 제공. 총 페이지 수, 전체 데이터 수 등의 정보
     // Slice : 현재 페이지에 대한 데이터만 제공. 전체 페이지 수에 대한 정보는 포함되지 않음
@@ -41,7 +44,8 @@ public class PostServiceImpl implements PostService {
                 postEntity.getId(),
                 postEntity.getTitle(),
                 postEntity.getContent(),
-                postEntity.getCreatedAt()
+                postEntity.getCreatedAt(),
+                postEntity.getUserEntity().getUserName()
         );
     }
 
@@ -62,23 +66,24 @@ public class PostServiceImpl implements PostService {
                 postEntity.getId(),
                 postEntity.getTitle(),
                 postEntity.getContent(),
-                postEntity.getCreatedAt()
+                postEntity.getCreatedAt(),
+                postEntity.getUserEntity().getUserName()
         );
     }
 
     @Override
     @Transactional(readOnly = true)
-    public PostResponseDTO getPostById(Long id) {
-        PostEntity post = postRepository.findById(id).orElseThrow(() -> new NotFoundException("Post not found with id: " + id, ErrorCode.NOT_FOUND));
+    public PostByIdResponseDTO getPostById(Long id) {
+        PostEntity postEntity = postRepository.findById(id).orElseThrow(() -> new NotFoundException("Post not found with id: " + id, ErrorCode.NOT_FOUND));
 
-        return new PostResponseDTO(post.getId(), post.getTitle(), post.getContent(), post.getCreatedAt());
+        return new PostByIdResponseDTO(postEntity.getId(), postEntity.getTitle(), postEntity.getContent(), postEntity.getCreatedAt(), postEntity.getUserEntity().getUserName());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<PostSearchResponseDTO> getSearchByKeyword(String keyword) {
-        List<PostEntity> posts = postRepository.findByTitleContains(keyword);
-        List<PostSearchResponseDTO> postRequests = mapToResponseDTO(posts, this::convertToPostSearchResponseDTO);
+        List<PostEntity> postEntityList = postRepository.findByTitleContains(keyword);
+        List<PostSearchResponseDTO> postRequests = mapToResponseDTO(postEntityList, this::convertToPostSearchResponseDTO);
 
         return postRequests;
     }
@@ -89,7 +94,8 @@ public class PostServiceImpl implements PostService {
                 postEntity.getId(),
                 postEntity.getTitle(),
                 postEntity.getContent(),
-                postEntity.getCreatedAt()
+                postEntity.getCreatedAt(),
+                postEntity.getUserEntity().getUserName()
         );
     }
 
@@ -101,9 +107,15 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void createPost(PostCreateRequestDTO postCreateRequest) {
+        Long writerId = postCreateRequest.getWriterId();
+
+        UserEntity userEntity = userRepository.findById(writerId)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + writerId, ErrorCode.NOT_FOUND));
+
         PostEntity post = PostEntity.builder()
                 .title(postCreateRequest.getTitle())
                 .content(postCreateRequest.getContent())
+                .userEntity(userEntity)
                 .build();
         postRepository.save(post);
     }

@@ -15,4 +15,6 @@ public class PostScrollListResponseDTO {
     private String title;
     private String content;
     private LocalDateTime createdAt;
+    private String writerName;
+
 }

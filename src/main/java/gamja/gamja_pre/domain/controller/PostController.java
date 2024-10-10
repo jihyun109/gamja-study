@@ -4,7 +4,7 @@ import gamja.gamja_pre.domain.service.PostServiceImpl;
 import gamja.gamja_pre.dto.post.request.PostCreateRequestDTO;
 import gamja.gamja_pre.dto.post.request.PostUpdateRequestDTO;
 import gamja.gamja_pre.dto.post.response.PostPagedListResponseDTO;
-import gamja.gamja_pre.dto.post.response.PostResponseDTO;
+import gamja.gamja_pre.dto.post.response.PostByIdResponseDTO;
 import gamja.gamja_pre.dto.post.response.PostScrollListResponseDTO;
 import gamja.gamja_pre.dto.post.response.PostSearchResponseDTO;
 import jakarta.validation.Valid;
@@ -45,7 +45,7 @@ public class PostController {
     }
 
     @GetMapping("/post/{id}")
-    public ResponseEntity<PostResponseDTO> getPostById(@PathVariable("id") Long id) {
+    public ResponseEntity<PostByIdResponseDTO> getPostById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(postServiceImpl.getPostById(id));
     }
 

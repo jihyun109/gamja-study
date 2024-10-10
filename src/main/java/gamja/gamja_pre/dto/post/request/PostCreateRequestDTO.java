@@ -17,4 +17,5 @@ public class PostCreateRequestDTO {
     @NotNull(message = "Content is required")
     private String content;
     private LocalDateTime createdAt;
+    private Long writerId;
 }
