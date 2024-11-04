@@ -1,6 +1,6 @@
-package gamja.gamja_pre.domain.controller;
+package gamja.gamja_pre.controller;
 
-import gamja.gamja_pre.domain.service.UserService;
+import gamja.gamja_pre.service.UserService;
 import gamja.gamja_pre.dto.user.request.UserCreateRequestDTO;
 import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
 import gamja.gamja_pre.dto.user.response.UserPagedListResponseDTO;

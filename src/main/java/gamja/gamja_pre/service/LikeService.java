@@ -1,4 +1,4 @@
-package gamja.gamja_pre.domain.service;
+package gamja.gamja_pre.service;
 
 import gamja.gamja_pre.dto.post.response.LikeByPostIdResponseDTO;
 

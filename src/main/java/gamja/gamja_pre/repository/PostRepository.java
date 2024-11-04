@@ -1,6 +1,6 @@
-package gamja.gamja_pre.domain.repository;
+package gamja.gamja_pre.repository;
 
-import gamja.gamja_pre.domain.entity.PostEntity;
+import gamja.gamja_pre.entity.PostEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

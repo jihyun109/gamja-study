@@ -1,6 +1,6 @@
-package gamja.gamja_pre.domain.controller;
+package gamja.gamja_pre.controller;
 
-import gamja.gamja_pre.domain.service.LikeService;
+import gamja.gamja_pre.service.LikeService;
 import gamja.gamja_pre.dto.post.response.LikeByPostIdResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package gamja.gamja_pre.domain.entity;
+package gamja.gamja_pre.entity;
 
 import gamja.gamja_pre.domain.id.LikeId;
 import jakarta.persistence.*;

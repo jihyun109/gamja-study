@@ -1,7 +1,7 @@
-package gamja.gamja_pre.domain.service;
+package gamja.gamja_pre.service;
 
-import gamja.gamja_pre.domain.entity.UserEntity;
-import gamja.gamja_pre.domain.repository.UserRepository;
+import gamja.gamja_pre.entity.UserEntity;
+import gamja.gamja_pre.repository.UserRepository;
 import gamja.gamja_pre.dto.user.request.UserCreateRequestDTO;
 import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
 import gamja.gamja_pre.dto.user.response.UserByIdResponseDTO;

@@ -1,6 +1,6 @@
-package gamja.gamja_pre.domain.controller;
+package gamja.gamja_pre.controller;
 
-import gamja.gamja_pre.domain.service.PostService;
+import gamja.gamja_pre.service.PostService;
 import gamja.gamja_pre.dto.post.request.PostCreateRequestDTO;
 import gamja.gamja_pre.dto.post.request.PostUpdateRequestDTO;
 import gamja.gamja_pre.dto.post.response.*;

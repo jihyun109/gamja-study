@@ -1,12 +1,12 @@
-package gamja.gamja_pre.domain.service;
+package gamja.gamja_pre.service;
 
-import gamja.gamja_pre.domain.entity.LikeEntity;
-import gamja.gamja_pre.domain.entity.PostEntity;
-import gamja.gamja_pre.domain.entity.UserEntity;
+import gamja.gamja_pre.entity.LikeEntity;
+import gamja.gamja_pre.entity.PostEntity;
+import gamja.gamja_pre.entity.UserEntity;
 import gamja.gamja_pre.domain.id.LikeId;
-import gamja.gamja_pre.domain.repository.LikeRepository;
-import gamja.gamja_pre.domain.repository.PostRepository;
-import gamja.gamja_pre.domain.repository.UserRepository;
+import gamja.gamja_pre.repository.LikeRepository;
+import gamja.gamja_pre.repository.PostRepository;
+import gamja.gamja_pre.repository.UserRepository;
 import gamja.gamja_pre.dto.post.response.LikeByPostIdResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
