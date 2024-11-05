@@ -21,4 +21,8 @@ public class UserCreateRequestDTO {
     @NotNull(message = "이메일은 필수 입력 항목입니다.")
     @Email(message = "유효한 이메일 주소를 입력하세요.")
     private String email;
+
+    @NotNull(message = "비밀번호는 필수 입력 항목입니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "비밀번호는 영문과 숫자만 포함할 수 있습니다.")
+    private String password;
 }
