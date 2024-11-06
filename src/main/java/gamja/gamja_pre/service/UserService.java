@@ -1,5 +1,7 @@
 package gamja.gamja_pre.service;
 
+import gamja.gamja_pre.dto.security.request.AuthUserAuthRequestDTO;
+import gamja.gamja_pre.dto.security.request.CheckOtpDTO;
 import gamja.gamja_pre.dto.user.request.UserCreateRequestDTO;
 import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
 import gamja.gamja_pre.dto.user.response.UserPagedListResponseDTO;
@@ -14,7 +16,10 @@ public interface UserService {
     Slice<UserScrollListResponseDTO> getInfiniteScrollUsers(int pageNumber, int pageSize);
     UserByIdResponseDTO getUserById(Long id);
     UserSearchByEmailResponseDTO getUserByEmail(String email);
-    void createUser(UserCreateRequestDTO userCreateRequest);
+    void addUser(UserCreateRequestDTO userCreateRequest);
     void updateUser(Long id, UserUpdateRequestDTO userUpdateRequest);
     void deleteUser(Long id);
+
+    void auth(AuthUserAuthRequestDTO userAuthRequestDTO);
+    boolean check(CheckOtpDTO checkOtpDTO);
 }

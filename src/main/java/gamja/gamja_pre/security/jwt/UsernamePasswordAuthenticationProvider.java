@@ -2,7 +2,7 @@ package gamja.gamja_pre.security.jwt;
 
 import gamja.gamja_pre.dto.security.request.AuthUserAuthRequestDTO;
 import gamja.gamja_pre.security.UsernamePasswordAuthentication;
-import gamja.gamja_pre.security.service.AuthUserService;
+import gamja.gamja_pre.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 @RequiredArgsConstructor
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
-    private final AuthUserService authUserService;
+    private final UserService userService;
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
@@ -18,7 +18,7 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
 
         AuthUserAuthRequestDTO authUserAuthRequestDTO = new AuthUserAuthRequestDTO(username, password);
 
-        authUserService.auth(authUserAuthRequestDTO); // AuthService에서 인증 처리
+        userService.auth(authUserAuthRequestDTO); // AuthService에서 인증 처리
         return new UsernamePasswordAuthenticationToken(username, password);
     }
 

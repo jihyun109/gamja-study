@@ -4,17 +4,14 @@ import gamja.gamja_pre.security.jwt.InitialAuthenticationFilter;
 import gamja.gamja_pre.security.jwt.JwtAuthenticationFilter;
 import gamja.gamja_pre.security.jwt.OtpAuthenticationProvider;
 import gamja.gamja_pre.security.jwt.UsernamePasswordAuthenticationProvider;
-import gamja.gamja_pre.security.service.AuthUserService;
+import gamja.gamja_pre.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -25,7 +22,7 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
-    private final AuthUserService authUserService;
+    private final UserService userService;
 
     @Bean
     public InitialAuthenticationFilter initialAuthenticationFilter(AuthenticationManager authManager) {
@@ -39,12 +36,12 @@ public class SecurityConfig {
 
     @Bean
     public OtpAuthenticationProvider otpAuthenticationProvider() {
-        return new OtpAuthenticationProvider(authUserService);
+        return new OtpAuthenticationProvider(userService);
     }
 
     @Bean
     public UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider() {
-        return new UsernamePasswordAuthenticationProvider(authUserService);
+        return new UsernamePasswordAuthenticationProvider(userService);
     }
 
     @Bean

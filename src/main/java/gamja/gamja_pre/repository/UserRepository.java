@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Page<UserEntity> findAllByOrderByIdAsc(Pageable pageable);
     Slice<UserEntity> findSliceByOrderByIdAsc(Pageable pageable);
     Optional<UserEntity> findByEmail(String email);
+
+    Optional<UserEntity> findUserEntityByUserName(String userName);
 }

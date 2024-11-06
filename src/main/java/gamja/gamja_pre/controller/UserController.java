@@ -1,5 +1,7 @@
 package gamja.gamja_pre.controller;
 
+import gamja.gamja_pre.dto.security.request.AuthUserAuthRequestDTO;
+import gamja.gamja_pre.dto.security.request.CheckOtpDTO;
 import gamja.gamja_pre.dto.user.request.UserLoginRequestDTO;
 import gamja.gamja_pre.service.UserService;
 import gamja.gamja_pre.dto.user.request.UserCreateRequestDTO;
@@ -8,6 +10,7 @@ import gamja.gamja_pre.dto.user.response.UserPagedListResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserByIdResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserScrollListResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserSearchByEmailResponseDTO;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -48,11 +51,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
-    @PostMapping("/users")
-    public ResponseEntity<String> createUser(@Valid @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
-        userService.createUser(userCreateRequestDTO);
-        return ResponseEntity.ok("유저 생성 완료");
-    }
+//    @PostMapping("/users")
+//    public ResponseEntity<String> createUser(@Valid @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
+//        userService.addUser(userCreateRequestDTO);
+//        return ResponseEntity.ok("유저 생성 완료");
+//    }
 
     @PutMapping("/users/{id}")    // user 수정
     public ResponseEntity<String> updateUser(@PathVariable(required = true) Long id, @Valid @RequestBody UserUpdateRequestDTO userUpdateRequest) {
@@ -73,5 +76,28 @@ public class UserController {
         String password = loginRequestDTO.getPassword();
         String code = loginRequestDTO.getCode();
         return ResponseEntity.ok("로그인 성공");
+    }
+
+    @PostMapping("/users/add")
+    public ResponseEntity<String> addAuthUser(@RequestBody UserCreateRequestDTO userCreateRequestDTO) {
+        userService.addUser(userCreateRequestDTO);
+        return ResponseEntity.ok("유저 생성 완료");
+    }
+
+    @PostMapping("/users/auth")
+    public ResponseEntity<String> auth(@RequestBody AuthUserAuthRequestDTO userAuthRequestDTO) {
+        userService.auth(userAuthRequestDTO);
+        return ResponseEntity.ok("유저 인증 완료");
+    }
+
+    @PostMapping("otps/check")
+    public ResponseEntity<String> check(@RequestBody CheckOtpDTO checkOtpDTO, HttpServletResponse response) {
+        // OTP 가 유요하면 HTTP 응답 코드 200 반환, 아니면 403 반환
+        if (userService.check(checkOtpDTO)) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        }
+        return ResponseEntity.ok("유저 otp 인증 완료");
     }
 }
