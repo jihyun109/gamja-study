@@ -1,5 +1,6 @@
 package gamja.gamja_pre.controller;
 
+import gamja.gamja_pre.dto.user.request.UserLoginRequestDTO;
 import gamja.gamja_pre.service.UserService;
 import gamja.gamja_pre.dto.user.request.UserCreateRequestDTO;
 import gamja.gamja_pre.dto.user.request.UserUpdateRequestDTO;
@@ -64,5 +65,13 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable(required = true) Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok("유저 삭제 완료");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserLoginRequestDTO loginRequestDTO) {
+        String userName = loginRequestDTO.getUserName();
+        String password = loginRequestDTO.getPassword();
+        String code = loginRequestDTO.getCode();
+        return ResponseEntity.ok("로그인 성공");
     }
 }
