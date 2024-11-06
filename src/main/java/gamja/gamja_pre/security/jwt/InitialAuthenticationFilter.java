@@ -1,5 +1,7 @@
 package gamja.gamja_pre.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gamja.gamja_pre.dto.user.request.UserLoginRequestDTO;
 import gamja.gamja_pre.security.OtpAuthentication;
 import gamja.gamja_pre.security.UsernamePasswordAuthentication;
 import io.jsonwebtoken.Jwts;
@@ -13,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -26,11 +29,25 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String userName = request.getHeader("userName");
-        String password = request.getHeader("password");
-        String code = request.getHeader("code");
+        // 요청 본문을 String으로 읽음
+        StringBuilder body = new StringBuilder();
+        String line;
+        try (BufferedReader reader = request.getReader()) {
+            while ((line = reader.readLine()) != null) {
+                body.append(line);
+            }
+        }
 
-        if (code == null) { // 요청에 OTP가 없으면 사용자 이름과 암호로 인증
+        // JSON -> DTO 변환 (예: ObjectMapper를 사용)
+        ObjectMapper objectMapper = new ObjectMapper();
+        UserLoginRequestDTO loginRequestDTO = objectMapper.readValue(body.toString(), UserLoginRequestDTO.class);
+
+        // DTO에서 값 추출
+        String userName = loginRequestDTO.getUserName();
+        String password = loginRequestDTO.getPassword();
+        String code = loginRequestDTO.getCode();
+
+        if (code == null) { // OTP가 없으면 사용자 이름과 암호로 인증
             UsernamePasswordAuthentication a = new UsernamePasswordAuthentication(userName, password);
             manager.authenticate(a);
         } else {
@@ -40,16 +57,16 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
             // 대칭 키로 서명 생성
             SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
 
-            String jwt = Jwts.builder() // JWT 구축, 사용자의 사용자 이름을 클레임 중 하나로 저장. 토큰을 서명하는 데 키를 이용.
+            String jwt = Jwts.builder()
                     .setClaims(Map.of("userName", userName))
                     .signWith(key)
                     .compact();
 
-            // 토큰을 HTTP 응답의 권한 부여 헤더에 추가
-            response.setHeader("Authorizatioin", jwt);;
+            response.setHeader("Authorization", "Bearer " + jwt);
         }
     }
 
+    // /login 경로에만 이 이 필터를 적용
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         return !request.getServletPath().equals("/login");
