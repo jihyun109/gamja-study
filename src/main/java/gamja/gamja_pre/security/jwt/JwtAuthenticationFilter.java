@@ -29,6 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = request.getHeader("Authorization");
 
         SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
+        System.out.println(jwt);
 
         // 토큰에서 클레임을 얻고 서명 검증.
         Claims claims = Jwts.parserBuilder()
@@ -55,6 +56,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // /login 요청에는 트리거되지 않도록 설정
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().equals("/login");
+        return request.getServletPath().equals("/login")|| request.getServletPath().equals("/users/add") || request.getServletPath().equals("/users/paged") ;
     }
 }
