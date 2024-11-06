@@ -44,10 +44,10 @@ public class AuthUserServiceImpl implements AuthUserService {
             if (passwordEncoder.matches(userAuthRequestDTO.getPassword(), user.getPassword())) {    // 암호가 맞으면 새 OTP 생성
                 renewOtp(user);
             } else {
-                throw new BadCredentialsException("Bad credentials.");
+                throw new BadCredentialsException("Bad credentials. Invalid username or password.");
             }
         } else {
-            throw new BadCredentialsException("Bad credentials.");
+            throw new BadCredentialsException("Bad credentials. User not found.");
         }
     }
 
