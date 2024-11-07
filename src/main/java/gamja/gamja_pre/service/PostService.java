@@ -18,4 +18,5 @@ public interface PostService {
     void createPost(PostCreateRequestDTO postCreateRequest);
     void updatePost(Long id, PostUpdateRequestDTO postUpdateRequest);
     void deletePost(Long id);
+    boolean isPostWriter(Long postId, String userName);
 }

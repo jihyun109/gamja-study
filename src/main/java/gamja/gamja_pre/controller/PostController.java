@@ -33,6 +33,7 @@ public class PostController {
         return ResponseEntity.ok(pagedUsers);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/posts/scroll") // 무한 스크롤
     public ResponseEntity<Slice<PostScrollListResponseDTO>> getInfiniteScrollPosts(
             @RequestParam(defaultValue = "0") int pageNumber, // 페이지 번호
@@ -42,6 +43,7 @@ public class PostController {
         return ResponseEntity.ok(scrollUsers);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/post/{id}")
     public ResponseEntity<PostByIdResponseDTO> getPostById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
@@ -59,6 +61,7 @@ public class PostController {
 //        return result;
 //    }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/posts/search")
     public ResponseEntity<List<PostSearchResponseDTO>> getSearchPosts(
             @RequestParam("keyword") String keyword) {
@@ -66,6 +69,7 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/posts/{userId}")
     public ResponseEntity<List<PostsByUserIdResponseDTO>> getSearchPosts(
             @PathVariable("userId") Long userId) {
@@ -81,7 +85,10 @@ public class PostController {
     }
 
     @PutMapping("/posts/{id}")    // post 수정
+
+    @PreAuthorize("@postServiceImpl.isPostWriter(#id, authentication.name)")  // 게시물 수정 권한 체크
     public ResponseEntity<String> updatePost(@PathVariable(required = true) Long id, @Valid @RequestBody PostUpdateRequestDTO postUpdateRequest) {
+        System.out.println("hi");
         postService.updatePost(id, postUpdateRequest);
         return ResponseEntity.ok("게시물 수정 완료");
     }

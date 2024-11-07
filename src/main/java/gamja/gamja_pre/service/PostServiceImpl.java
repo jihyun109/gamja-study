@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -148,4 +149,20 @@ public class PostServiceImpl implements PostService {
         postRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id, ErrorCode.NOT_FOUND));
         postRepository.deleteById(id);
     }
+
+    @Override
+    public boolean isPostWriter(Long postId, String userName) {
+        PostEntity post = postRepository.findById(postId)
+                .orElseThrow(() -> new NoSuchElementException("Post not found"));
+        System.out.println("post: " + post);
+
+        System.out.println("userName: " + userName);
+
+        String postWriterName = post.getUserEntity().getUserName();
+
+        // JWT에서 사용자 ID를 추출하고 비교
+        return postWriterName.equals(userName);
+    }
+
+
 }
