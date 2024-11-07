@@ -78,7 +78,7 @@ public class UserController {
         return ResponseEntity.ok("로그인 성공");
     }
 
-    @PostMapping("/users/add")
+    @PostMapping("/users/signup")
     public ResponseEntity<String> addAuthUser(@RequestBody UserCreateRequestDTO userCreateRequestDTO) {
         userService.addUser(userCreateRequestDTO);
         return ResponseEntity.ok("유저 생성 완료");
