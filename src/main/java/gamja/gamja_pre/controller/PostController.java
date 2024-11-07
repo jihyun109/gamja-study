@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -72,6 +73,7 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/posts")    // post 생성
     public ResponseEntity<String> createPost(@Valid @RequestBody PostCreateRequestDTO postCreateRequest) {
         postService.createPost(postCreateRequest);

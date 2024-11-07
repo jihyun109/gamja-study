@@ -44,6 +44,7 @@ public class SecurityConfig {
         return new UsernamePasswordAuthenticationProvider(userService);
     }
 
+    // AuthenticationProvider를 관리
     @Bean
     public AuthenticationManager authManager() {
         // AuthenticationProvider 목록 설정
@@ -59,8 +60,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())  // CSRF 보호 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()  // 인증 없이 모든 요청 허용
+                        .requestMatchers("/login", "/users/signup").permitAll()  // /login, /signup 경로는 인증 없이 접근 가능
+                        .anyRequest().authenticated()  // 그 외 모든 요청은 인증된 사용자만 접근 가능
                 )
+
+                // 필터 순서 설정
                 .addFilterAt(initialAuthenticationFilter(authManager), BasicAuthenticationFilter.class)
                 .addFilterAfter(jwtAuthenticationFilter(), BasicAuthenticationFilter.class);
         return http.build();  // 필터 체인 빌드
