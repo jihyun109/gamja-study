@@ -1,6 +1,7 @@
 package gamja.gamja_pre.dto.security.request;
 
 import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @AllArgsConstructor
@@ -8,6 +9,6 @@ import lombok.*;
 @Builder
 @Getter
 public class AuthUserAuthRequestDTO {
-    private String userName;
+    private String username;
     private String password;
 }

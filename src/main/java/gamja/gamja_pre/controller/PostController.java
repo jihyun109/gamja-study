@@ -6,6 +6,7 @@ import gamja.gamja_pre.dto.post.request.PostUpdateRequestDTO;
 import gamja.gamja_pre.dto.post.response.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,8 @@ import java.util.List;
 @RestController // JSON, XML 과 같은 형식으로 데이터 반환
 @RequiredArgsConstructor
 public class PostController {
+    // Implement를 둘다 참조하고 있음 인터페이스를 둔 의미가 없지 않냐
+    @Lazy
     private final PostService postService;
 
     @GetMapping("/posts/paged") // 페이징 처리됨.
@@ -84,8 +87,8 @@ public class PostController {
         return ResponseEntity.ok("게시물 생성 완료");
     }
 
+    // 수정 이렇게 할 수도 있지만 path 기반으로 수정해보기
     @PutMapping("/posts/{id}")    // post 수정
-
     @PreAuthorize("@postServiceImpl.isPostWriter(#id, authentication.name)")  // 게시물 수정 권한 체크
     public ResponseEntity<String> updatePost(@PathVariable(required = true) Long id, @Valid @RequestBody PostUpdateRequestDTO postUpdateRequest) {
         System.out.println("hi");

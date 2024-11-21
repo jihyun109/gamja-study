@@ -1,4 +1,4 @@
-package gamja.gamja_pre.security;
+package gamja.gamja_pre.security.jwt;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

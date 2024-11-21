@@ -1,6 +1,5 @@
 package gamja.gamja_pre.entity;
 
-import gamja.gamja_pre.domain.id.LikeId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

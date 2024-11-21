@@ -13,14 +13,20 @@ import java.util.List;
 @Builder
 @Getter
 public class UserEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 DB에 위임
     private Long id;
+
     private String userName;
+
     private String email;
+
     private String password;
 
-    //
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostEntity> posts;
 

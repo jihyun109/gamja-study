@@ -1,4 +1,4 @@
-package gamja.gamja_pre.domain.id;
+package gamja.gamja_pre.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -3,6 +3,7 @@ package gamja.gamja_pre.service;
 import gamja.gamja_pre.dto.post.request.PostCreateRequestDTO;
 import gamja.gamja_pre.dto.post.request.PostUpdateRequestDTO;
 import gamja.gamja_pre.dto.post.response.*;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 

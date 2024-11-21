@@ -10,6 +10,7 @@ import gamja.gamja_pre.dto.user.response.UserScrollListResponseDTO;
 import gamja.gamja_pre.dto.user.response.UserSearchByEmailResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UserService {
     Page<UserPagedListResponseDTO> getPagedUsers(int pageNumber, int pageSize);
@@ -19,7 +20,6 @@ public interface UserService {
     void addUser(UserCreateRequestDTO userCreateRequest);
     void updateUser(Long id, UserUpdateRequestDTO userUpdateRequest);
     void deleteUser(Long id);
+    void auth(AuthUserAuthRequestDTO userAuthRequestDTO, UserDetails userDetails);
 
-    void auth(AuthUserAuthRequestDTO userAuthRequestDTO);
-    boolean check(CheckOtpDTO checkOtpDTO);
 }

@@ -17,4 +17,4 @@ spring:
 
 jwt:
    signing:
-      key: "mySuperSecretKey123dddddwerwersdfssdf"
+      key: "Z2FtamFzdHVkeWJhYsssssssss2tlbmRzZWNyZXRrZXk="

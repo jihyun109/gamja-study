@@ -1,5 +1,6 @@
 package gamja.gamja_pre.repository;
 
+import gamja.gamja_pre.entity.Role;
 import gamja.gamja_pre.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Page<UserEntity> findAllByOrderByIdAsc(Pageable pageable);
     Slice<UserEntity> findSliceByOrderByIdAsc(Pageable pageable);
     Optional<UserEntity> findByEmail(String email);
-
     Optional<UserEntity> findUserEntityByUserName(String userName);
+
 }
